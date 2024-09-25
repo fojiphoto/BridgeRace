@@ -1,0 +1,34 @@
+﻿<Properties StartupConfiguration="{4FC5E739-4699-7B76-0EFB-FA650FA83496}|">
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="3b785f68-cb07-44c6-8be5-22c97279ce25" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/_Game/Scripts/Bot.cs">
+    <Files>
+      <File FileName="Assets/StateMachine/CharacterStateMC.cs" Line="11" Column="46" IsPinned="True" />
+      <File FileName="Assets/_Game/Scripts/Bot.cs" Line="71" Column="50" IsPinned="True" />
+      <File FileName="Assets/_Game/Scripts/Character.cs" Line="35" Column="37" IsPinned="True" />
+      <File FileName="Assets/_Game/Scripts/Player.cs" Line="72" Column="74" IsPinned="True" />
+      <File FileName="Assets/_Game/Scripts/Brick.cs" Line="64" Column="33" IsPinned="True" />
+      <File FileName="Assets/_Game/Scripts/BrickBridge.cs" Line="19" Column="1" IsPinned="True" />
+      <File FileName="../Downloads/PlayerController.cs" />
+      <File FileName="Assets/StateMachine/IState.cs" />
+      <File FileName="Assets/EasyJoystick/Scripts/Joystick.cs" />
+      <File FileName="Assets/_UI/Scripts/Setting.cs" />
+      <File FileName="Assets/StateMachine/AttackState.cs" />
+      <File FileName="../StackMaker_VuAnhDuc/Assets/Script/CameraFollow.cs" />
+      <File FileName="Assets/_Pool/Pool/SimplePool.cs" />
+      <File FileName="Assets/_Pool/Bullet.cs" />
+      <File FileName="Assets/_Pool/Guner.cs" />
+      <File FileName="Assets/_Pool/Pool/MiniPool.cs" />
+      <File FileName="Assets/_Pool/Pool/GameUnit.cs" />
+      <File FileName="Assets/_Game/Scripts/CameraFollow.cs" />
+      <File FileName="Assets/_Game/Scripts/ColorTypeSO.cs" Line="1" Column="1" />
+      <File FileName="Assets/_Game/Scripts/ColorType.cs" />
+      <File FileName="Assets/_Game/Scripts/ActionManager.cs" Line="18" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+</Properties>
