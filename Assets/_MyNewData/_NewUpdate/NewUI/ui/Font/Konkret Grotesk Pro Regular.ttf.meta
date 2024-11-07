@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: d208e808d0c244c4fafc424539d647ba
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Konkret Grotesk Pro
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 30d4c437486fae04a96a579d3df7f45b, type: 3}
+  - {fileID: 12800000, guid: 10e01f369d6ce9442b8f10aae36d021a, type: 3}
+  - {fileID: 12800000, guid: 21fb829cc7c71604aab1416ee31a063c, type: 3}
+  - {fileID: 12800000, guid: c145d4e2ef3be964dbc366ebe0bd031c, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

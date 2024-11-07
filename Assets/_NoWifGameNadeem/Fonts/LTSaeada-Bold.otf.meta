@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 47bbdf382491fc54da2321d57a49b940
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - LT Saeada
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 4050a3bd172ef014195866d590eae813, type: 3}
+  - {fileID: 12800000, guid: a18c065b182f05d49a0826f01252807a, type: 3}
+  - {fileID: 12800000, guid: d384d8b773ca40c479da0f505508615a, type: 3}
+  - {fileID: 12800000, guid: 2518386684ce2e54fb69b652c6c252bb, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

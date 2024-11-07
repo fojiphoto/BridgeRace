@@ -4,5 +4,41 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/BrgeScenes/Splash Screen.unity
+    guid: 2ffe17f690381fb47963e4c4771857e3
+  - enabled: 1
+    path: Assets/BrgeScenes/BrgMain.unity
+    guid: 29f2f3a6acfdfd449a50c512b12b0849
+  - enabled: 1
+    path: Assets/BrgeScenes/BrgR_#1.unity
+    guid: 3e8b2d0ef5f14824c82f1515ab0ed5a3
+  - enabled: 1
+    path: Assets/BrgeScenes/BrgR_#2.unity
+    guid: a89c56a48fca4c04c8138149bff814d7
+  - enabled: 1
+    path: Assets/BrgeScenes/BrgR_#3.unity
+    guid: ab63b82eaea230b4cbda504075717721
+  - enabled: 1
+    path: Assets/BrgeScenes/BrgR_#4.unity
+    guid: 744f42aa78bc4754790ee67e638c4fb8
+  - enabled: 1
+    path: Assets/BrgeScenes/BrgR_#5.unity
+    guid: e257fbd7595ae2448b99ce45f43f3a67
+  - enabled: 1
+    path: Assets/BrgeScenes/BrgR_#6.unity
+    guid: d737503b592a36847856bdeeb6b80924
+  - enabled: 1
+    path: Assets/BrgeScenes/BrgR_#7.unity
+    guid: 6a544cfc2d6d14d42b9cb03449f25737
+  - enabled: 1
+    path: Assets/BrgeScenes/BrgR_#8.unity
+    guid: fab5cc9e61523324b861f02b2c6fb2e8
+  - enabled: 1
+    path: Assets/BrgeScenes/BrgR_#9.unity
+    guid: ebf0779a48916974496d1648150711e5
+  - enabled: 1
+    path: Assets/BrgeScenes/BrgR_#10.unity
+    guid: 0dc69d1b968dd4e4ab4fa839e5065a81
   m_configObjects: {}
