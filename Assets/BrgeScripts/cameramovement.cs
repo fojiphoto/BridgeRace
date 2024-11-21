@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-//using IdyllicGames;
-
+using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class cameramovement : MonoBehaviour
 {
@@ -19,27 +19,22 @@ public class cameramovement : MonoBehaviour
     public GameObject level1, level2, level3;
     public int low, temp;
     public GameObject gamelost;
+    public GameObject Pause;
     public GameObject won;
-    public GameObject pausePanel;
-    int level;
-    public GameObject UIPanel;
-    public PanelController panelController;
-    public GameObject canvas;
+    public int levelno;
     private void Awake()
     {
         if (!Instance)
         {
             Instance = this;
         }
-        level = PlayerPrefs.GetInt("LevelBrgs");
-
     }
     void Start()
     {
-        GameObject uiPanels = Instantiate(UIPanel);
-        panelController = uiPanels.GetComponent<PanelController>();
+        Time.timeScale = 1;
+        levelno = SceneManager.GetActiveScene().buildIndex - 1;
         aa = true;
-        gamelost.SetActive(false);
+        // gamelost.SetActive(false);
         offset = transform.position - player.transform.position;
         firstbot.SetActive(false);
         secondbot.SetActive(false);
@@ -47,8 +42,8 @@ public class cameramovement : MonoBehaviour
         ranks = false;
         won.SetActive(false);
         low = -1;
-         //nadeem
-      // AdManager_IdyllicGames.ShowBanner(BannerAdPosition.BOTTOM);
+        //PlayerPrefs.SetInt("ShowInter", 0);
+
     }
     void FixedUpdate()
     {
@@ -59,22 +54,33 @@ public class cameramovement : MonoBehaviour
         if (ranks)
         {
             transform.position = Vector3.MoveTowards(transform.position, finalposofcamera.transform.position, 150 * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(25,0,0);
+            transform.rotation = Quaternion.Euler(25, 0, 0);
             if (transform.position == finalposofcamera.transform.position)
             {
-               
                 ranks = false;
             }
         }
     }
-    public void BrgR_eliminater(List<GameObject> arethere)
+    //public void ShowAd()
+    //{
+    //if (PlayerPrefs.GetInt("ShowInter") == 0)
+    //{
+    //    PlayerPrefs.SetInt("ShowInter", 1);
+    //    if (Application.internetReachability != NetworkReachability.NotReachable)
+    //    {
+    // AdsManager.Instance.ShowPriorityInterstitial();
+    //    }
+    //}
+    //}
+    public void eliminater(List<GameObject> arethere)
     {
+        //print("eliminater");
         List<GameObject> templist = new List<GameObject>();
-
         if (arethere.Count == 1)
         {
-           // firstst = level3.GetComponent<Enemyr_Bridge>().colorgivento[0];
-            //allplayers.Remove(firstst);
+            // print("if eliminater");
+            firstst = level3.GetComponent<Eliminater>().colorgivento[0];
+            allplayers.Remove(firstst);
             List<GameObject> stagelist = new List<GameObject>();
             for (int i = 0; i < allplayers.Count; i++)
             {
@@ -89,36 +95,38 @@ public class cameramovement : MonoBehaviour
                         allplayers[i] = allplayers[k];
                         allplayers[k] = temp;
                     }
-
                 }
             }
             secondnd = allplayers[0];
             third = allplayers[1];
-            
-            if (arethere[0].CompareTag("Player"))
+            if (firstst.tag == "Player" || secondnd.tag == "Player" || third.tag == "Player")
             {
-                aa = false;
-                ranks = true;
-
-                finalposofcamera.GetComponent<Camera>().enabled = true;
-                Invoke(nameof(showWin), 3);
-                canvas.SetActive(false);
-                // won.SetActive(true);
-                firstbot.SetActive(true);
-                arethere[0].SetActive(false);
+                Invoke(nameof(Complete), 0.5f);
+                // ShowAd();
+                if (firstst.tag == "Player")
+                {
+                    ui_Changed.instance.LevelCompleteCoins(20);
+                    //print("20 coins do");
+                }
+                else if (secondnd.tag == "Player")
+                {
+                    ui_Changed.instance.LevelCompleteCoins(15);
+                    //print("15 coins doo");
+                }
+                else if (third.tag == "Player")
+                {
+                    ui_Changed.instance.LevelCompleteCoins(10);
+                    //print("10 coins doo");
+                }
             }
-            else {
-                //CASAds.instance?.ShowInterstitial();
-               // gamelost.SetActive(true);
-                panelController.LossPanel.SetActive(true);
-                Debug.Log("Bridge Level Fail " + level);
-                //GameAnalyticsSDK.GameAnalytics.NewProgressionEvent(GameAnalyticsSDK.GAProgressionStatus.Fail, "Mode Bridge Runner", "Level " + level);
+            else
+            {
+                Invoke(nameof(LevelFail), 0.5f);
+                //  ShowAd();
+                // print("if here");
             }
-              //BrgR_declarewin(firstst, secondnd, third);
-            //nadeem
-            //CASAds.instance?.ShowInterstitial();
-                     //AdsManager.instance.ShowInterstitialWithoutConditions();
-                 //AdManager_IdyllicGames.ShowInterstitial();
+            declarewin(firstst, secondnd, third);
+            // print("here");
         }
         else
         {
@@ -130,22 +138,22 @@ public class cameramovement : MonoBehaviour
                     GameObject a = allplayers[i];
                     if (a.transform.tag == "Player")
                     {
-                        panelController.LossPanel.SetActive(true);
-                        //gamelost.SetActive(true);
-                        Debug.Log("Bridge Level Fail " + level);
-                        //GameAnalyticsSDK.GameAnalytics.NewProgressionEvent(GameAnalyticsSDK.GAProgressionStatus.Fail, "Mode Bridge Runner", "Level " + level);
                         aa = false;
                         // Time.timeScale = 0;
-                        //nadeem
-                        //AdsManager.instance.ShowInterstitialWithoutConditions();
-                        //CASAds.instance?.ShowInterstitial();
-                       //AdManager_IdyllicGames.ShowInterstitial();
-                       
+                        Invoke(nameof(LevelFail), 0.5f);
+                        ui_Changed.instance.CurrentLvlNum.gameObject.SetActive(false);
+                        ui_Changed.instance.PauseBtn.gameObject.SetActive(false);
+                        //  ShowAd();
+                        if (PlayerPrefs.GetInt("sounds") == 1)
+                        {
+                            gamelost.GetComponent<AudioSource>().Play();
+                            //  print("if here");
+                            //print("Level Fail");
+                        }
                     }
                     else
                     {
                         templist.Add(a);
-
                     }
                 }
             }
@@ -158,18 +166,35 @@ public class cameramovement : MonoBehaviour
             }
         }
     }
-
-    public void showWin()
+    public void LevelFail()
     {
-        //CASAds.instance?.ShowInterstitial();
-        panelController.WinPanel.SetActive(true);
-        //won.SetActive(true);
-        Debug.Log("Bridge LevelComplete " + level);
-        //GameAnalyticsSDK.GameAnalytics.NewProgressionEvent(GameAnalyticsSDK.GAProgressionStatus.Complete, "Mode Bridge Runner", "Level " + level);
+        if (gamelost.activeInHierarchy)
+        {
+            return;
+        }
+        //Time.timeScale = 0;
+        gamelost.SetActive(true);
+        ui_Changed.instance.LevelFailCoin();
+        Pause.SetActive(false);
+        //HereAdsManager.Instance.ShowAdMobBanner();
+        //HereAdsManager.Instance.ShowPriorityInterstitial();
     }
-    public void BrgR_declarewin(GameObject first, GameObject second, GameObject third)
+    public void Complete()
     {
-
+        ui_Changed.instance.CurrentLvlNum.gameObject.SetActive(false);
+        ui_Changed.instance.PauseBtn.gameObject.SetActive(false);
+        aa = false;
+        ranks = true;
+        won.SetActive(true);
+        if (PlayerPrefs.GetInt("sounds") == 1)
+        {
+            won.GetComponent<AudioSource>().Play();
+        }
+        //Time.timeScale = 0;
+        //HereAdsManager.Instance.ShowAdMobBanner();
+    }
+    public void declarewin(GameObject first, GameObject second, GameObject third)
+    {
         firstbot.transform.GetChild(0).GetComponent<SkinnedMeshRenderer>().material = first.transform.GetChild(0).GetComponent<SkinnedMeshRenderer>().material;
         firstbot.SetActive(true);
         first.SetActive(false);
@@ -179,19 +204,14 @@ public class cameramovement : MonoBehaviour
         thirdbot.transform.GetChild(0).GetComponent<SkinnedMeshRenderer>().material = third.transform.GetChild(0).GetComponent<SkinnedMeshRenderer>().material;
         thirdbot.SetActive(true);
         third.SetActive(false);
-
+    }
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void PauseGame(){
-        panelController.PausePanel.SetActive(true);
-        //pausePanel.SetActive(true);
-        //CASAds.instance?.ShowInterstitial();
-        Time.timeScale=0;
-    }
-
-    public void ResumeGame(){
-        pausePanel.SetActive(false);
-        //CASAds.instance?.ShowInterstitial();
-        Time.timeScale=1;
-    }
 }

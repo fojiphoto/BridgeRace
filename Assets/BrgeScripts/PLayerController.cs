@@ -70,7 +70,7 @@ public class PLayerController : MonoBehaviour
         int tempsize = Bag.transform.childCount;
         for (int i = 0; i < tempsize; i++)
         {
-            Bag.transform.GetChild(0).GetComponent<AddMaterials>().BackBrgR_ToFirstPosition();
+            Bag.transform.GetChild(0).GetComponent<AddMaterials>().BackToFirstPosition();
         }
     }
 
@@ -105,7 +105,7 @@ public class PLayerController : MonoBehaviour
                 if (collision.gameObject.transform.GetComponent<AIcontroller>().Bag.transform.childCount > Bag.transform.childCount)
                 {
                     StartCoroutine(stand());
-                   // Vibration.Vibrate(100);
+                    Vibration.Vibrate(100);
                 }
             }
         }
@@ -128,12 +128,12 @@ public class PLayerController : MonoBehaviour
             }
         }
         else if (other.gameObject.CompareTag("BrickBuster"))
-        {
+        { 
             GameObject newBrick = other.gameObject;
             // Handle BrickBuster trigger: add 5 bricks
             for (int i = 0; i < 5; i++)
             {
-                GameObject NewBricks = Instantiate(newBrick, other.transform.position, Quaternion.identity);
+               GameObject NewBricks = Instantiate(newBrick, other.transform.position, Quaternion.identity);
                 NewBricks.GetComponent<MeshRenderer>().material = MyMaterial; // Match player's material
                 audio_source.PlayOneShot(Pick_up);
 

@@ -41,14 +41,14 @@ public class stepsr_Bridge : MonoBehaviour
                             {
                                 AIcontroller.MyTargets.Add(back);
                             }
-                            bag.transform.GetChild(size).GetComponent<AddMaterials>().BackBrgR_ToFirstPosition();
+                            bag.transform.GetChild(size).GetComponent<AddMaterials>().BackToFirstPosition();
                         }
                         else
                         {
                             if (Input.GetMouseButton(0))
                             {
                                 meshRenderer.material.color = pLayer.Bag.transform.GetChild(size).gameObject.GetComponent<MeshRenderer>().material.color;
-                                pLayer.Bag.transform.GetChild(size).GetComponent<AddMaterials>().BackBrgR_ToFirstPosition();
+                                pLayer.Bag.transform.GetChild(size).GetComponent<AddMaterials>().BackToFirstPosition();
                             }
                         }
                     }
@@ -73,7 +73,7 @@ public class stepsr_Bridge : MonoBehaviour
                     {
                         if (name == "bot")
                         {
-                            AIcontroller.stepBrgR_sover();
+                            AIcontroller.stepsover();
                         }
                     }
                 }

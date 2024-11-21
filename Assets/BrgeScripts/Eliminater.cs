@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Eliminater : MonoBehaviour
@@ -11,10 +10,9 @@ public class Eliminater : MonoBehaviour
     {
         count++;
         colorgivento.Add(a);
-        Debug.Log("count...." + count);
         if (totalicangive == count)
         {
-            cameramovement.Instance.BrgR_eliminater(colorgivento);
+            cameramovement.Instance.eliminater(colorgivento);
         }
     }
 }

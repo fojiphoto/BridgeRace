@@ -1,12 +1,12 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 public class AIcontroller : MonoBehaviour
 {
-    public bool collection, placeing, movetoplace, backdown;
-    public int carethismany, havethismany;
+    bool collection, placeing, movetoplace, backdown;
+    private int carethismany, havethismany;
     public GameObject othstep, nthstep;
     public GameObject mytiles;
     public List<GameObject> mytargetparents;
@@ -18,11 +18,13 @@ public class AIcontroller : MonoBehaviour
     public Material MyMaterial;
     public Animator animator;
     public GameObject Bag;
-    public int total, count;
+    private int total, count;
     public int stage;
     public float speed;
     public int exits;
     public bool move;
+    public float moveDuration = 0.3f;
+    public Ease moveEase = Ease.OutQuad;
     void Start()
     {
         havethismany = total = count = stage = 0;
@@ -31,87 +33,99 @@ public class AIcontroller : MonoBehaviour
         animator.SetTrigger("Run");
         Bag = transform.GetChild(2).gameObject;
         MyMaterial = transform.GetChild(0).GetComponent<SkinnedMeshRenderer>().material;
-        TakeBrgR_thismany();
-        addBrgR_stairscases();
+        Takethismany();
+        addstairscases();
         collection = true;
-        GoToBrgR_Tile();
+        GoToTile();
         exits = 0;
+        SetStairCaseList();
     }
+    void SetStairCaseList()
+    {
+        //print(mystairs[0].transform.childCount);
+        for (int i = 0; i < mystairs[0].transform.childCount; i++)
+        {
+            staircase.Add(mystairs[0].transform.GetChild(i).gameObject);
+        }
+        //staircase.Add(GameObject.Find("1st"));
+        //staircase.Add(GameObject.Find("2nd"));
+        //staircase.Add(GameObject.Find("3rd"));
+        //staircase.Add(GameObject.Find("4th"));
+        //print("StairCaseSetted");
+    }
+
     void Update()
     {
         if (move)
         {
             if (collection)
             {
-                transform.position = Vector3.MoveTowards(transform.position, TargetTile.transform.position, speed * Time.deltaTime);
-                if (Vector3.Distance(transform.position, TargetTile.transform.position) < 0.2f)
-                { GetComponent<Collider>().isTrigger = false; }
+                if (TargetTile != null)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, TargetTile.transform.position, speed * Time.deltaTime);
+                    if (Vector3.Distance(transform.position, TargetTile.transform.position) < 0.2f)
+                    {
+                        GetComponent<Collider>().isTrigger = false;
+                    }
+                }
+                else
+                {
+                    // Handle the case where TargetTile is null
+                    GoToTile();
+                }
             }
             if (placeing)
             {
-                transform.position = Vector3.MoveTowards(transform.position, othstep.transform.position, speed * Time.deltaTime);
-                if (Vector3.Distance(transform.position, othstep.transform.position) < 0.15f)
+                if (othstep != null)
                 {
-                    placeing = false;
-                    movetoplace = true;
-                    transform.LookAt(nthstep.transform.position);
+                    transform.position = Vector3.MoveTowards(transform.position, othstep.transform.position, speed * Time.deltaTime);
+                    if (Vector3.Distance(transform.position, othstep.transform.position) < 0.15f)
+                    {
+                        placeing = false;
+                        movetoplace = true;
+                        if (nthstep != null)
+                        {
+                            transform.LookAt(nthstep.transform.position);
+                        }
+                    }
                 }
             }
             if (movetoplace)
             {
-                transform.position = Vector3.MoveTowards(transform.position, nthstep.transform.position, speed * Time.deltaTime);
-                if (Vector3.Distance(transform.position, nthstep.transform.position) < 0.25f)
+                if (nthstep != null)
                 {
-                    nthstep.transform.root.GetComponent<Eliminater>().thischar(gameObject);
-                    movetoplace = false;
-                    stage++;
-                    TakeBrgR_thismany();
-                    addBrgR_stairscases();
-                    GoToBrgR_Tile();
-                    GetComponent<Collider>().isTrigger = false;
-                    exits = 0;
+                    transform.position = Vector3.MoveTowards(transform.position, nthstep.transform.position, speed * Time.deltaTime);
+                    if (Vector3.Distance(transform.position, nthstep.transform.position) < 0.25f)
+                    {
+                        nthstep.transform.root.GetComponent<Eliminater>().thischar(gameObject);
+                        movetoplace = false;
+                        stage++;
+                        Takethismany();
+                        addstairscases();
+                        GoToTile();
+                        GetComponent<Collider>().isTrigger = false;
+                        exits = 0;
+                    }
                 }
             }
             if (backdown)
             {
-                transform.position = Vector3.MoveTowards(transform.position, othstep.transform.position, speed * Time.deltaTime);
-                if (Vector3.Distance(transform.position, othstep.transform.position) < 0.25f)
+                if (othstep != null)
                 {
-                    backdown = false;
-                    TakeBrgR_thismany();
-                    GoToBrgR_Tile();
-                    collection = true;
-
+                    transform.position = Vector3.MoveTowards(transform.position, othstep.transform.position, speed * Time.deltaTime);
+                    if (Vector3.Distance(transform.position, othstep.transform.position) < 0.25f)
+                    {
+                        backdown = false;
+                        Takethismany();
+                        GoToTile();
+                        collection = true;
+                    }
                 }
             }
         }
     }
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("cude"))
-        {
-            if (collision.gameObject.GetComponent<MeshRenderer>().material.color == MyMaterial.color)
-            {
-                GameObject a = collision.gameObject;
-                a.transform.parent = Bag.transform;
-                a.transform.localPosition = new Vector3(Bag.transform.localPosition.x, (Bag.transform.childCount * 0.25f), Bag.transform.localPosition.z);
-                a.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                MyTargets.Remove(collision.gameObject);
-                if (!placeing)
-                {
-                    havethismany++;
-                    if (carethismany == havethismany)
-                    {
-                        ChooseBrgR_ACase();
-                    }
-                    else
-                    {
-                        GoToBrgR_Tile();
-                    }
-                }
-            }
-        }
-
         if (collision.gameObject.CompareTag("Bot") || collision.gameObject.CompareTag("Player"))
         {
             if (!movetoplace)
@@ -122,53 +136,91 @@ public class AIcontroller : MonoBehaviour
                     {
                         if (collision.gameObject.transform.GetComponent<AIcontroller>().Bag.transform.childCount > Bag.transform.childCount)
                         {
-                            StartCoroutine(BrgR_stand());
+                            StartCoroutine(stand());
                         }
                     }
                     if (collision.gameObject.CompareTag("Player"))
                     {
                         if (collision.gameObject.transform.GetComponent<PLayerController>().Bag.transform.childCount > Bag.transform.childCount)
                         {
-                            StartCoroutine(BrgR_stand());
+                            StartCoroutine(stand());
                         }
                     }
                 }
             }
         }
     }
-    public void TakeBrgR_thismany()
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.gameObject.CompareTag("cude"))
+        {
+            if (other.gameObject.GetComponent<MeshRenderer>().material.color == MyMaterial.color)
+            {
+                GameObject a = other.gameObject;
+                //a.transform.parent = Bag.transform;
+                //a.transform.localPosition = new Vector3(Bag.transform.localPosition.x, (Bag.transform.childCount * 0.25f), Bag.transform.localPosition.z);
+                //a.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+                a.transform.DOMove(Bag.transform.position, moveDuration).SetEase(moveEase).OnComplete(() =>
+                {
+                    // Once the item has reached the bag, make it a child of the bag
+                    a.transform.SetParent(Bag.transform);
+                    a.transform.localPosition = new Vector3(Bag.transform.localPosition.x, (Bag.transform.childCount * 0.25f), Bag.transform.localPosition.z);
+                    a.transform.localRotation = Quaternion.identity;
+                });
+                MyTargets.Remove(other.gameObject);
+                if (!placeing)
+                {
+                    havethismany++;
+                    if (carethismany == havethismany)
+                    {
+                        ChooseACase();
+                    }
+                    else
+                    {
+                        GoToTile();
+                    }
+                }
+            }
+        }
+    }
+    public void Takethismany()
     {
         havethismany = 0;
         carethismany = Random.Range(8, 20);
     }
-    IEnumerator BrgR_stand()
+    IEnumerator stand()
     {
         GetComponent<Collider>().isTrigger = true;
         animator.SetTrigger("knock");
         move = false;
-        sendallBrgR_brikesback();
+        sendallbrikesback();
         yield return new WaitForSeconds(1.2f);
         move = true;
         animator.SetTrigger("Run");
         GetComponent<Collider>().isTrigger = false;
     }
-    public void sendallBrgR_brikesback()
+    public void sendallbrikesback()
     {
         int tempsize = Bag.transform.childCount;
         for (int i = 0; i < tempsize; i++)
         {
             MyTargets.Add(Bag.transform.GetChild(0).gameObject);
-            Bag.transform.GetChild(0).GetComponent<AddMaterials>().BackBrgR_ToFirstPosition();
+            Bag.transform.GetChild(0).GetComponent<AddMaterials>().BackToFirstPosition();
         }
     }
-    public void ChooseBrgR_ACase()
+    public void ChooseACase()
     {
         total = 0;
         count = 0;
         for (int i = 0; i < staircase.Count; i++)
         {
+            //print("staircase[i] : " + i);
             count = 0;
             GameObject k = staircase[i].transform.GetChild(1).gameObject;
+            //print(k.name);
             for (int j = 0; j < k.transform.childCount; j++)
             {
                 MeshRenderer thism = k.transform.GetChild(j).GetComponent<MeshRenderer>();
@@ -189,26 +241,25 @@ public class AIcontroller : MonoBehaviour
                     break;
                 }
             }
-
         }
         if (total == 0)
         {
             Thisstaircase = staircase[Random.Range(0, staircase.Count)];
-            BrgR_andnth();
+            oandnth();
         }
         else
         {
-            BrgR_andnth();
+            oandnth();
         }
         transform.LookAt(othstep.transform.position);
     }
-    public void stepBrgR_sover()
+    public void stepsover()
     {
         movetoplace = collection = placeing = false;
         backdown = true;
         transform.LookAt(othstep.transform.position);
     }
-    public void GoToBrgR_Tile()
+    public void GoToTile()
     {
         float low = 100f;
         GetComponent<Collider>().isTrigger = false;
@@ -220,10 +271,11 @@ public class AIcontroller : MonoBehaviour
                 low = distance;
                 TargetTile = MyTargets[i];
             }
+            //print("MyTargets :: " + i);
         }
         transform.LookAt(TargetTile.transform);
     }
-    public void BrgR_andnth()
+    public void oandnth()
     {
         transform.LookAt(Thisstaircase.transform.position);
         othstep = Thisstaircase.transform.GetChild(1).GetChild(0).GetChild(0).gameObject;
@@ -231,21 +283,35 @@ public class AIcontroller : MonoBehaviour
         collection = false;
         placeing = true;
     }
-    public void addBrgR_stairscases()
+    public void addstairscases()
     {
-        if (stage <= 2)
+        if (stage < mystairs.Count)
         {
             staircase.Clear();
             MyTargets.Clear();
+            //print(stage);
             mytiles = mytargetparents[stage].gameObject;
             mytargetparents[stage].GetComponent<ColorPlacer>().assigncolor(gameObject, "bot");
-            for (int i = 0; i < mystairs[stage].transform.childCount; i++)
-            {
-                staircase.Add(mystairs[stage].transform.GetChild(i).gameObject);
-            }
             collection = true;
+            //print("StairsCleared");
+            UpdateStairsCase();
         }
     }
+
+    void UpdateStairsCase()
+    {
+        //print("UpdateStairsCase");
+        if (stage == 1)
+        {
+            staircase.Add(mystairs[1].transform.GetChild(0).gameObject);
+            staircase.Add(mystairs[1].transform.GetChild(1).gameObject);
+        }
+        else if (stage == 2)
+        {
+            staircase.Add(mystairs[2].transform.GetChild(0).gameObject);
+        }
+    }
+
     public void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "0th")
